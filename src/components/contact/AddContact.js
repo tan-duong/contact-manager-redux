@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Consumer } from "../../Context";
 //import uuid from "uuid";
 import TextInputGroup from "../layout/TextInputGroup";
-import Axios from 'axios'
+import Axios from "axios";
 
 export default class AddContact extends Component {
   constructor(props) {
@@ -52,20 +51,6 @@ export default class AddContact extends Component {
       email
     };
 
-    const res = await Axios({
-      method: 'post',
-      url: 'https://jsonplaceholder.typicode.com/users',
-      data: contact
-    })
-
-    if(res.status === 201)
-      dispatch({
-        type: "ADD_CONTACT",
-        payload: {
-          contact: res.data
-        }
-      });
-
     this.setState({
       name: "",
       phone: "",
@@ -86,59 +71,50 @@ export default class AddContact extends Component {
 
   render() {
     const { name, email, nameErr, emailErr, phoneErr } = this.state;
-    const { phone } = this.props;
+    const { phone, dispatch } = this.props;
 
     return (
-      <Consumer>
-        {value => {
-          const { dispatch } = value;
-          return (
-            <div className="card mb-3">
-              <div className="card-header">Add Contact</div>
-              <div className="card-body">
-                <form onSubmit={this._onSubmit.bind(this, dispatch)}>
-                  <TextInputGroup
-                    name="name"
-                    placeholder="Enter name ..."
-                    value={name}
-                    onChange={this._onChange}
-                    error={nameErr}
-                  />
-                  <TextInputGroup
-                    name="email"
-                    placeholder="Enter email ..."
-                    value={email}
-                    onChange={this._onChange}
-                    error={emailErr}
-                  />
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <input
-                      type="text"
-                      name="phone"
-                      placeholder="Enter phone ..."
-                      defaultValue={phone}
-                      className={`${
-                        phoneErr !== "" ? "is-invalid" : null
-                      } form-control form-control-lg`}
-                      ref={this.phoneInput}
-                    />
-                    {phoneErr && (
-                      <div className="invalid-feedback">{phoneErr}</div>
-                    )}
-                  </div>
-
-                  <input
-                    type="submit"
-                    value="Add Contact"
-                    className="btn btn-light btn-block"
-                  />
-                </form>
-              </div>
+      <div className="card mb-3">
+        <div className="card-header">Add Contact</div>
+        <div className="card-body">
+          <form onSubmit={this._onSubmit.bind(this, dispatch)}>
+            <TextInputGroup
+              name="name"
+              placeholder="Enter name ..."
+              value={name}
+              onChange={this._onChange}
+              error={nameErr}
+            />
+            <TextInputGroup
+              name="email"
+              placeholder="Enter email ..."
+              value={email}
+              onChange={this._onChange}
+              error={emailErr}
+            />
+            <div className="form-group">
+              <label htmlFor="phone">Phone</label>
+              <input
+                type="text"
+                name="phone"
+                placeholder="Enter phone ..."
+                defaultValue={phone}
+                className={`${
+                  phoneErr !== "" ? "is-invalid" : null
+                } form-control form-control-lg`}
+                ref={this.phoneInput}
+              />
+              {phoneErr && <div className="invalid-feedback">{phoneErr}</div>}
             </div>
-          );
-        }}
-      </Consumer>
+
+            <input
+              type="submit"
+              value="Add Contact"
+              className="btn btn-light btn-block"
+            />
+          </form>
+        </div>
+      </div>
     );
   }
 }

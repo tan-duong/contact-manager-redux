@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Consumer } from "../../Context";
 //mport uuid from "uuid";
 import TextInputGroup from "../layout/TextInputGroup";
 import Axios from "axios";
@@ -57,19 +56,7 @@ export default class EditContact extends Component {
       email
     };
 
-    const res = await Axios({
-      method: "put",
-      url: `https://jsonplaceholder.typicode.com/users/${id}`,
-      data: contact
-    });
-
-    if (res.status === 200)
-      dispatch({
-        type: "UPDATE_CONTACT",
-        payload: {
-          contact: res.data
-        }
-      });
+    
 
     this.setState({
       name: "",
@@ -84,50 +71,43 @@ export default class EditContact extends Component {
   };
 
   render() {
-    const { name, email, phone, nameErr, emailErr, phoneErr } = this.state;
+    const { name, email, phone, nameErr, emailErr, phoneErr, dispatch } = this.state;
 
     return (
-      <Consumer>
-        {value => {
-          const { dispatch } = value;
-          return (
-            <div className="card mb-3">
-              <div className="card-header">Update Contact</div>
-              <div className="card-body">
-                <form onSubmit={this._onSubmit.bind(this, dispatch)}>
-                  <TextInputGroup
-                    name="name"
-                    placeholder="Enter name ..."
-                    value={name}
-                    onChange={this._onChange}
-                    error={nameErr}
-                  />
-                  <TextInputGroup
-                    name="email"
-                    placeholder="Enter email ..."
-                    value={email}
-                    onChange={this._onChange}
-                    error={emailErr}
-                  />
-                  <TextInputGroup
-                    name="phone"
-                    placeholder="Enter phone ..."
-                    value={phone}
-                    onChange={this._onChange}
-                    error={phoneErr}
-                  />
+      <div className="card mb-3">
+        <div className="card-header">Update Contact</div>
+        <div className="card-body">
+          <form onSubmit={this._onSubmit.bind(this, dispatch)}>
+            <TextInputGroup
+              name="name"
+              placeholder="Enter name ..."
+              value={name}
+              onChange={this._onChange}
+              error={nameErr}
+            />
+            <TextInputGroup
+              name="email"
+              placeholder="Enter email ..."
+              value={email}
+              onChange={this._onChange}
+              error={emailErr}
+            />
+            <TextInputGroup
+              name="phone"
+              placeholder="Enter phone ..."
+              value={phone}
+              onChange={this._onChange}
+              error={phoneErr}
+            />
 
-                  <input
-                    type="submit"
-                    value="Update Contact"
-                    className="btn btn-light btn-block"
-                  />
-                </form>
-              </div>
-            </div>
-          );
-        }}
-      </Consumer>
+            <input
+              type="submit"
+              value="Update Contact"
+              className="btn btn-light btn-block"
+            />
+          </form>
+        </div>
+      </div>
     );
   }
 }
