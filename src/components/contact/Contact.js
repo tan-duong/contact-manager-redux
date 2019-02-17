@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Axios from "axios";
 import { Link } from "react-router-dom";
-export default class Contact extends Component {
+import {connect} from 'react-redux'
+import {deleteContact} from '../../redux/actions/contact'
+
+class Contact extends Component {
   static propTypes = {
     contact: PropTypes.object.isRequired
   };
@@ -17,33 +20,15 @@ export default class Contact extends Component {
     });
   };
 
-  _onDelete = async (id, dispatch) => {
-    try {
-      const res = await Axios({
-        url: `https://jsonplaceholder.typicode.com/users/${id}`,
-        method: "delete"
-      });
-
-      if (res.status === 200)
-        dispatch({
-          type: "DELETE_CONTACT",
-          payload: {
-            id: id
-          }
-        });
-    } catch (error) {
-      dispatch({
-        type: "DELETE_CONTACT",
-        payload: {
-          id: id
-        }
-      });
-    }
+  _onDelete = async (id) => {
+    const {deleteContact} = this.props
+    deleteContact(id)
   };
 
   render() {
     const { showContactInfo } = this.state;
-    const {name, email, phone, id, dispatch} = this.props
+    const {name, email, phone, id} = this.props
+
     return (
       <div className="card card-body mb-3">
         <h4>
@@ -56,7 +41,7 @@ export default class Contact extends Component {
           <i
             className="fas fa-times"
             style={{ cursor: "pointer", float: "right", color: "red" }}
-            onClick={this._onDelete.bind(this, id, dispatch)}
+            onClick={this._onDelete.bind(this, id)}
           />
           <Link to={`/contact/edit/${id}`}>
             <i
@@ -80,3 +65,10 @@ export default class Contact extends Component {
     );
   }
 }
+
+
+const actions = {
+  deleteContact,
+} 
+
+export default connect(null, actions)(Contact)
