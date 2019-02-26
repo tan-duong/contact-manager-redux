@@ -1,5 +1,8 @@
-import { GET_CONTACTS } from "../actions/type";
-const initState = {};
+import { GET_CONTACTS, GET_CONTACT } from "../actions/type";
+const initState = {
+  contacts: [],
+  contact: {}
+};
 
 const contactReducer = (state = initState, action) => {
   switch (action.type) {
@@ -7,6 +10,11 @@ const contactReducer = (state = initState, action) => {
       return {
         ...state,
         contacts: action.payload
+      };
+    case GET_CONTACT:
+      return {
+        ...state,
+        contact: action.payload
       };
     case "DELETE_CONTACT":
       return {

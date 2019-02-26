@@ -2,8 +2,10 @@ import React, { Component } from "react";
 //mport uuid from "uuid";
 import TextInputGroup from "../layout/TextInputGroup";
 import Axios from "axios";
+import {connect} from 'react-redux'
+import {getContact, updContact} from '../../redux/actions/contact'
 
-export default class EditContact extends Component {
+class EditContact extends Component {
   state = {
     name: "",
     phone: "",
@@ -14,18 +16,21 @@ export default class EditContact extends Component {
     phoneErr: ""
   };
 
-  async componentDidMount() {
-    const { id } = this.props.match.params;
-    const res = await Axios({
-      method: "get",
-      url: `https://jsonplaceholder.typicode.com/users/${id}`
-    });
-    const { name, phone, email } = res.data;
+  componentWillReceiveProps() {
+
+    const { name, phone, email } = this.props.contact;
     this.setState({
       name: name,
       phone: phone,
       email: email
     });
+  }
+
+  async componentDidMount() {
+    const { id } = this.props.match.params;
+    const {getContact} = this.props
+    getContact(id)
+    
   }
 
   _onChange = e =>
@@ -111,3 +116,16 @@ export default class EditContact extends Component {
     );
   }
 }
+
+const mapState = (state) => {
+  return {
+    contact: state.contact.contact,
+  }
+}
+
+const actions = {
+  getContact,
+  updContact,
+}
+
+export default connect()(EditContact)
