@@ -4,13 +4,14 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {getContacts} from '../../redux/actions/contact'
 
+
 class Contacts extends Component {
-  static PropTypes = {
+  static propTypes = {
     contacts: PropTypes.array.isRequired,
     getContacts: PropTypes.func.isRequired
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     const { getContacts} = this.props
     getContacts()
   }

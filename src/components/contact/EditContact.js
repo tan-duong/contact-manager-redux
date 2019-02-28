@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-//mport uuid from "uuid";
 import TextInputGroup from "../layout/TextInputGroup";
-import Axios from "axios";
 import {connect} from 'react-redux'
 import {getContact, updContact} from '../../redux/actions/contact'
 
@@ -16,15 +14,6 @@ class EditContact extends Component {
     phoneErr: ""
   };
 
-  componentWillReceiveProps() {
-
-    const { name, phone, email } = this.props.contact;
-    this.setState({
-      name: name,
-      phone: phone,
-      email: email
-    });
-  }
 
   async componentDidMount() {
     const { id } = this.props.match.params;
@@ -38,7 +27,7 @@ class EditContact extends Component {
       [e.target.name]: e.target.value
     });
 
-  _onSubmit = async (dispatch, e) => {
+  _onSubmit = async (e) => {
     e.preventDefault();
 
     let { name, phone, email } = this.state;
@@ -61,7 +50,8 @@ class EditContact extends Component {
       email
     };
 
-    
+    this.props.updContact(id, contact)
+
 
     this.setState({
       name: "",
@@ -76,13 +66,15 @@ class EditContact extends Component {
   };
 
   render() {
-    const { name, email, phone, nameErr, emailErr, phoneErr, dispatch } = this.state;
-
+    let { name, email, phone, nameErr, emailErr, phoneErr} = this.state;
+    name = this.props.contact.name
+    email = this.props.contact.email
+    phone = this.props.contact.phone
     return (
       <div className="card mb-3">
         <div className="card-header">Update Contact</div>
         <div className="card-body">
-          <form onSubmit={this._onSubmit.bind(this, dispatch)}>
+          <form onSubmit={this._onSubmit}>
             <TextInputGroup
               name="name"
               placeholder="Enter name ..."
@@ -128,4 +120,4 @@ const actions = {
   updContact,
 }
 
-export default connect()(EditContact)
+export default connect(mapState, actions)(EditContact)

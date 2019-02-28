@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Axios from "axios";
 import { Link } from "react-router-dom";
 import {connect} from 'react-redux'
 import {deleteContact} from '../../redux/actions/contact'
@@ -27,7 +26,7 @@ class Contact extends Component {
 
   render() {
     const { showContactInfo } = this.state;
-    const {name, email, phone, id} = this.props
+    const {name, email, phone, id} = this.props.contact
 
     return (
       <div className="card card-body mb-3">

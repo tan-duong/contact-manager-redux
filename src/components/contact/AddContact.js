@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 //import uuid from "uuid";
 import TextInputGroup from "../layout/TextInputGroup";
-import Axios from "axios";
-
-export default class AddContact extends Component {
+import {connect} from 'react-redux'
+import {addContact} from '../../redux/actions/contact'
+class AddContact extends Component {
   constructor(props) {
     super(props);
     this.phoneInput = React.createRef();
@@ -24,7 +24,7 @@ export default class AddContact extends Component {
       [e.target.name]: e.target.value
     });
 
-  _onSubmit = async (dispatch, e) => {
+  _onSubmit = async (e) => {
     e.preventDefault();
 
     this.setState({
@@ -51,6 +51,8 @@ export default class AddContact extends Component {
       email
     };
 
+    this.props.addContact(contact)
+
     this.setState({
       name: "",
       phone: "",
@@ -71,13 +73,13 @@ export default class AddContact extends Component {
 
   render() {
     const { name, email, nameErr, emailErr, phoneErr } = this.state;
-    const { phone, dispatch } = this.props;
+    const { phone } = this.props;
 
     return (
       <div className="card mb-3">
         <div className="card-header">Add Contact</div>
         <div className="card-body">
-          <form onSubmit={this._onSubmit.bind(this, dispatch)}>
+          <form onSubmit={this._onSubmit}>
             <TextInputGroup
               name="name"
               placeholder="Enter name ..."
@@ -118,3 +120,10 @@ export default class AddContact extends Component {
     );
   }
 }
+
+
+const actions = {
+  addContact,
+} 
+
+export default connect(null, actions)(AddContact)
