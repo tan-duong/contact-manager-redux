@@ -73,7 +73,7 @@ export const addContact = async contact => {
 
     return {
       type: ADD_CONTACT,
-      payload: { contact }
+      payload: { contact: res.data }
     };
   } catch (error) {
     console.error(error);

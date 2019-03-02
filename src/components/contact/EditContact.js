@@ -65,11 +65,19 @@ class EditContact extends Component {
     this.props.history.push("/");
   };
 
+  componentWillReceiveProps(nextProps) {
+    const {name, email, phone} = nextProps.contact
+    
+    this.setState({
+      name,
+      email,
+      phone,
+    });
+}
+
   render() {
     let { name, email, phone, nameErr, emailErr, phoneErr} = this.state;
-    name = this.props.contact.name
-    email = this.props.contact.email
-    phone = this.props.contact.phone
+    
     return (
       <div className="card mb-3">
         <div className="card-header">Update Contact</div>
